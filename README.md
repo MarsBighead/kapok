@@ -1,2 +1,5 @@
-# kapok
-Kapok-Golang and Angular web project
+# Kapok
+
+Kapok is a project for gin framework.
+
+## Demo

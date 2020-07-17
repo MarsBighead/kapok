@@ -1,0 +1,25 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:12
+    container_name: postgres-12
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgres
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=togerme
+    networks:
+      - 'pg'
+
+volumes:
+    postgres-data:
+        external: true
+    
+networks:
+    pg:
+        external: 
+            name: pg
