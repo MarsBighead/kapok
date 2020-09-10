@@ -1,0 +1,17 @@
+postgres:
+    - driver: postgres
+      host: 192.168.198.152
+      username: postgres
+      password: togerme
+      dbname: hbu
+      sslmode: disable
+      port: 5433
+      switch: on
+    - driver: postgres
+      host: localhost
+      username: postgres
+      password: togerme
+      dbname: hbu
+      sslmode: disable
+      port: 5433
+      switch: off

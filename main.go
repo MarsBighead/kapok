@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
+	"database/sql"
+	"flag"
 	"fmt"
+	"kapok/api"
 	"kapok/api/handlers"
+	"kapok/pkg/util"
+	"log"
 
 	"path"
 	"path/filepath"
@@ -10,7 +16,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	name = "kapok"
+)
+
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	config := flag.String("config", "", "configuration file to load")
+	flag.Parse()
+	app, err := util.Traversing(name, *config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	cfg, err := util.Parse(app.Config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Parse configure file %s successfully.", app.Config)
+	pg, err := cfg.GetPostgres().OpenPgConnection(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 	r := gin.Default()
 	r.NoRoute(func(c *gin.Context) {
 		dir, file := path.Split(c.Request.RequestURI)
@@ -22,14 +49,27 @@ func main() {
 			c.File("./ui/dist/ui/" + path.Join(dir, file))
 		}
 	})
-
+	factory(r, pg)
 	r.GET("/todo", handlers.GetTodoListHandler)
 	r.POST("/todo", handlers.AddTodoHandler)
 	r.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	r.PUT("/todo", handlers.CompleteTodoHandler)
 
-	err := r.Run(":3000")
+	err = r.Run(":3000")
 	if err != nil {
 		panic(err)
+	}
+	fmt.Println("nihao")
+}
+
+func factory(r *gin.Engine, db *sql.DB) {
+	services := map[string]api.Service{
+		"vc": api.NewVcRequest(db),
+	}
+	for k, s := range services {
+		r.GET("api/"+k, s.Query)
+		r.POST("api/"+k, s.Add)
+		r.PUT("api/"+k, s.Update)
+		r.DELETE("api/"+k, s.Del)
 	}
 }
