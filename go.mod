@@ -8,5 +8,6 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/lib/pq v1.1.1
 	github.com/rs/xid v1.2.1
+	github.com/vmware/govmomi v0.23.1
 	gopkg.in/yaml.v2 v2.2.8
 )

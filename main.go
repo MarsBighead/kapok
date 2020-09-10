@@ -64,12 +64,13 @@ func main() {
 
 func factory(r *gin.Engine, db *sql.DB) {
 	services := map[string]api.Service{
-		"vc": api.NewVcRequest(db),
+		"/api/vc":   api.NewVcRequest(db),
+		"/api/host": api.NewHostRequest(db),
 	}
 	for k, s := range services {
-		r.GET("api/"+k, s.Query)
-		r.POST("api/"+k, s.Add)
-		r.PUT("api/"+k, s.Update)
-		r.DELETE("api/"+k, s.Del)
+		r.GET(k, s.Query)
+		r.POST(k, s.Add)
+		r.PUT(k, s.Update)
+		r.DELETE(k+"/:id", s.Del)
 	}
 }

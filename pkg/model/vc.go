@@ -35,7 +35,7 @@ type Vc struct {
 
 //Get VCcenter  list
 func (r *VcResponse) Get() error {
-	stmt, err := r.DB.Prepare(`SELECT id,"endPoint", "port", "fullName", "version", "instanceUuid", "changeTime" FROM "Vc"`)
+	stmt, err := r.DB.Prepare(`SELECT id,"endPoint", "port", "fullName", "version", "instanceUuid", "changeTime" FROM "Host"`)
 	if err != nil {
 		return err
 	}
