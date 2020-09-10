@@ -21,7 +21,7 @@ func NewVcResponse(db *sql.DB) *VcResponse {
 //Vc  data structure for table Vc
 //    active: vCenter is active in usage meter or not
 type Vc struct {
-	ID           int        `vsql:"column:id;type:SERIAL;primary_key"                       json:"-"`
+	ID           int        `vsql:"column:id;type:SERIAL;primary_key"                       json:"id"`
 	EndPoint     string     `vsql:"column:endPoint;type:varchar(256) NOT NULL"              json:"endPoint"`
 	Port         int        `vsql:"column:port;type:integer NOT NULL"                       json:"port"`
 	UserName     string     `vsql:"column:userName;type:varchar(256) NOT NULL"              json:"-"`
@@ -35,7 +35,7 @@ type Vc struct {
 
 //Get VCcenter  list
 func (r *VcResponse) Get() error {
-	stmt, err := r.DB.Prepare(`SELECT id,"endPoint", "port", "fullName", "version", "instanceUuid", "changeTime" FROM "Host"`)
+	stmt, err := r.DB.Prepare(`SELECT id,"endPoint", "port", "fullName", "version", "instanceUuid", "changeTime" FROM "Vc"`)
 	if err != nil {
 		return err
 	}

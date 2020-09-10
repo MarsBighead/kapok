@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="358,0" last-zoom="1.4" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="hbu" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="User" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="366.286" y="90.7143"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="512"/>
+	</column>
+	<column name="changeTime" not-null="true">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+</table>
+
+<table name="Vc" layer="0" collapse-mode="2" max-obj-count="12">
+	<schema name="public"/>
+	<position x="365.286" y="204.143"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="endPoint" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="port" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="userName" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="sso" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fullName" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="version" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="instanceUuid" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="changeTime" not-null="true">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="Vc_pk" type="pk-constr" table="public.&quot;Vc&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Vm" layer="0" collapse-mode="2" max-obj-count="21">
+	<schema name="public"/>
+	<position x="754.857" y="388.143"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="vcId" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="hostName">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="moref" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="hostId">
+		<type name="bigint" length="256"/>
+	</column>
+	<column name="cpuReservation">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="guestFullName">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="instanceUuid">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="memoryReservation">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="memorySizeMB">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="numCpu">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="uuid">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="bootTime">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<column name="powerState">
+		<type name="character varying" length="32"/>
+	</column>
+	<column name="suspendInterval">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ipAddress">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="changeTime" not-null="true">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="Vm_pk" type="pk-constr" table="public.&quot;Vm&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Host" layer="0" collapse-mode="2" max-obj-count="19">
+	<schema name="public"/>
+	<position x="953.571" y="9.99996"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="vcId" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="moref" not-null="true">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="hz">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="numCpuCores">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="numCpuPackages">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="numCpuThreads">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="memorySize">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="uuid">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="fullName">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="instanceUuid">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="name">
+		<type name="character varying" length="256"/>
+	</column>
+	<column name="version">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="bootTime">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<column name="powerState">
+		<type name="character varying" length="32"/>
+	</column>
+	<column name="changeTime" not-null="true">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="Host_pk" type="pk-constr" table="public.&quot;Host&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="Host_uk" type="uq-constr" table="public.&quot;Host&quot;">
+		<columns names="id,vcId" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="Vm_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Host&quot;" table="public.&quot;Vm&quot;">
+	<columns names="vcId,hostId" ref-type="src-columns"/>
+	<columns names="vcId,id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Host_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Vc&quot;" table="public.&quot;Host&quot;">
+	<columns names="vcId" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_Host_Vc" type="relfk" layer="0"
+	 src-table="public.&quot;Host&quot;"
+	 dst-table="public.&quot;Vc&quot;" reference-fk="Host_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_Vm_Host&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Vm&quot;"
+	 dst-table="public.&quot;Host&quot;" reference-fk="Vm_fk"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

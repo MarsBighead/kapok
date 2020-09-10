@@ -49,7 +49,9 @@ func main() {
 			c.File("./ui/dist/ui/" + path.Join(dir, file))
 		}
 	})
-	factory(r, pg)
+	s := api.Service{
+		Engine: r, DB: pg}
+	s.Run(ctx)
 	r.GET("/todo", handlers.GetTodoListHandler)
 	r.POST("/todo", handlers.AddTodoHandler)
 	r.DELETE("/todo/:id", handlers.DeleteTodoHandler)
@@ -63,14 +65,14 @@ func main() {
 }
 
 func factory(r *gin.Engine, db *sql.DB) {
-	services := map[string]api.Service{
+	actions := map[string]api.Action{
 		"/api/vc":   api.NewVcRequest(db),
 		"/api/host": api.NewHostRequest(db),
 	}
-	for k, s := range services {
-		r.GET(k, s.Query)
-		r.POST(k, s.Add)
-		r.PUT(k, s.Update)
-		r.DELETE(k+"/:id", s.Del)
+	for k, a := range actions {
+		r.GET(k, a.Query)
+		r.POST(k, a.Add)
+		r.PUT(k, a.Update)
+		r.DELETE(k+"/:id", a.Del)
 	}
 }
