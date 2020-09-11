@@ -34,7 +34,7 @@ func (r *vcRequest) Query(c *gin.Context) {
 		return
 	}
 	data := r.Response.Data
-	c.JSON(http.StatusOK, gin.H{
+	c.IndentedJSON(http.StatusOK, gin.H{
 		"code": 1,
 		"data": data,
 	})

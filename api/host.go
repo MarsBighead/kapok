@@ -34,7 +34,7 @@ func (r *hostRequest) Query(c *gin.Context) {
 		return
 	}
 	data := r.Response.Data
-	c.JSON(http.StatusOK, gin.H{
+	c.IndentedJSON(http.StatusOK, gin.H{
 		"code": 1,
 		"data": data,
 	})
@@ -60,7 +60,7 @@ func (r *hostRequest) Add(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.IndentedJSON(http.StatusOK, gin.H{
 		"code":    1,
 		"message": "添加成功",
 		"data":    h.ID,

@@ -6,12 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"kapok/api"
-	"kapok/api/handlers"
 	"kapok/pkg/util"
 	"log"
-
-	"path"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,6 +19,7 @@ var (
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	gin.ForceConsoleColor()
 	config := flag.String("config", "", "configuration file to load")
 	flag.Parse()
 	app, err := util.Traversing(name, *config)
@@ -38,25 +35,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	r := gin.Default()
-	r.NoRoute(func(c *gin.Context) {
-		dir, file := path.Split(c.Request.RequestURI)
-		fmt.Printf(dir)
-		ext := filepath.Ext(file)
-		if file == "" || ext == "" {
-			c.File("./ui/dist/ui/index.html")
-		} else {
-			c.File("./ui/dist/ui/" + path.Join(dir, file))
-		}
-	})
-	s := api.Service{
-		Engine: r, DB: pg}
-	s.Run(ctx)
-	r.GET("/todo", handlers.GetTodoListHandler)
-	r.POST("/todo", handlers.AddTodoHandler)
-	r.DELETE("/todo/:id", handlers.DeleteTodoHandler)
-	r.PUT("/todo", handlers.CompleteTodoHandler)
+	//r := gin.Default()
+	r := gin.New()
+	// LoggerWithFormatter middleware will write the logs to gin.DefaultWriter
+	// By default gin.DefaultWriter = os.Stdout
 
+	s := api.Service{Engine: r, DB: pg}
+	s.Middleware().Run(ctx)
 	err = r.Run(":3000")
 	if err != nil {
 		panic(err)

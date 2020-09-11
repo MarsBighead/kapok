@@ -34,7 +34,7 @@ func (r *vmRequest) Query(c *gin.Context) {
 		return
 	}
 	data := r.Response.Data
-	c.JSON(http.StatusOK, gin.H{
+	c.IndentedJSON(http.StatusOK, gin.H{
 		"code": 1,
 		"data": data,
 	})
@@ -42,6 +42,7 @@ func (r *vmRequest) Query(c *gin.Context) {
 
 //Add Vc data to database
 func (r *vmRequest) Add(c *gin.Context) {
+	ipAddress := "10.138.1.108"
 	h := &model.Vm{
 		VcID:          2,
 		HostID:        1,
@@ -50,7 +51,7 @@ func (r *vmRequest) Add(c *gin.Context) {
 		GuestFullName: "UsageMeter361.vm.129",
 		Uuid:          "423a511a-9db6-fccb-6877-040db7f9572a",
 		InstanceUUID:  "528688ac-4b4e-ca2b-a90c-df2c9493a618",
-		IPAddress:     "10.138.1.108",
+		IPAddress:     &ipAddress,
 	}
 
 	err := r.Response.Add([]*model.Vm{h})

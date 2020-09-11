@@ -37,13 +37,13 @@ type Vm struct {
 	Uuid              string                         `vsql:"column:uuid;type:varchar(256)"                 json:"uuid"`
 	BootTime          *time.Time                     `vsql:"column:bootTime;type:timestamp with time zone"`
 	PowerState        types.VirtualMachinePowerState `vsql:"column:powerState;type:varchar(256)"`
-	IPAddress         string                         `vsql:"column:ipAddress;type:varchar(256)"`
+	IPAddress         *string                        `vsql:"column:ipAddress;type:varchar(256)"`
 	ChangeTime        *time.Time                     `vsql:"column:changeTime;type:timestamp with time zone NOT NULL"`
 }
 
 //Get VCcenter  list
 func (r *VmResponse) Get() error {
-	stmt, err := r.DB.Prepare(`SELECT id, "vcId", "hostId","moref", "uuid","guestFullName", "instanceUuid", "powerState", "changeTime" FROM "Vm"`)
+	stmt, err := r.DB.Prepare(`SELECT id, "vcId", "hostId","moref", "uuid","guestFullName", "ipAddress","instanceUuid", "powerState", "changeTime" FROM "Vm"`)
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func (r *VmResponse) Get() error {
 	var vms []*Vm
 	for rows.Next() {
 		vm := new(Vm)
-		err = rows.Scan(&vm.ID, &vm.VcID, &vm.HostID, &vm.Moref, &vm.Uuid, &vm.IPAddress, &vm.InstanceUUID, &vm.PowerState, &vm.ChangeTime)
+		err = rows.Scan(&vm.ID, &vm.VcID, &vm.HostID, &vm.Moref, &vm.Uuid, &vm.GuestFullName, &vm.IPAddress, &vm.InstanceUUID, &vm.PowerState, &vm.ChangeTime)
 		if err != nil {
 			return err
 
@@ -71,14 +71,14 @@ func (r *VmResponse) Add(vms []*Vm) error {
 		return nil
 	}
 	now := time.Now()
-	stmt, err := r.DB.Prepare(`Insert into "Vm" ("vcId", "hostId", "moref", "uuid", "guestFullName", "instanceUuid", "powerState", "changeTime")
-		VALUES ( $1, $2, $3, $4, $5, $6, $7, $8) RETURNING id
+	stmt, err := r.DB.Prepare(`Insert into "Vm" ("vcId", "hostId", "moref", "uuid", "guestFullName", "ipAddress", "instanceUuid", "powerState", "changeTime")
+		VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
 	`)
 	if err != nil {
 		return err
 	}
 	for _, vm := range vms {
-		err = stmt.QueryRow(vm.VcID, vm.HostID, vm.Moref, vm.Uuid, vm.GuestFullName, vm.InstanceUUID, vm.PowerState, now).Scan(&vm.ID)
+		err = stmt.QueryRow(vm.VcID, vm.HostID, vm.Moref, vm.Uuid, vm.GuestFullName, vm.IPAddress, vm.InstanceUUID, vm.PowerState, now).Scan(&vm.ID)
 		if err != nil {
 			return err
 		}
