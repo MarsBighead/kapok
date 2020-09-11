@@ -29,6 +29,7 @@ type Service struct {
 // Run application with service configure
 func (s *Service) Run(ctx context.Context) {
 	runNoRoute(s.Engine)
+	runDemo(s.Engine)
 	run(s.Engine, s.DB)
 }
 
@@ -53,21 +54,25 @@ func (s *Service) Middleware() *Service {
 }
 
 func run(r *gin.Engine, db *sql.DB) {
+	api := r.Group("/api")
+	actions := map[string]Action{
+		"vc":   NewVcRequest(db),
+		"host": NewHostRequest(db),
+		"vm":   NewVmRequest(db),
+	}
+	for k, a := range actions {
+		api.GET(k, a.Query)
+		api.POST(k, a.Add)
+		api.PUT(k, a.Update)
+		api.DELETE(k+"/:id", a.Del)
+	}
+}
+
+func runDemo(r *gin.Engine) {
 	r.GET("/todo", handlers.GetTodoListHandler)
 	r.POST("/todo", handlers.AddTodoHandler)
 	r.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	r.PUT("/todo", handlers.CompleteTodoHandler)
-	actions := map[string]Action{
-		"/api/vc":   NewVcRequest(db),
-		"/api/host": NewHostRequest(db),
-		"/api/vm":   NewVmRequest(db),
-	}
-	for k, a := range actions {
-		r.GET(k, a.Query)
-		r.POST(k, a.Add)
-		r.PUT(k, a.Update)
-		r.DELETE(k+"/:id", a.Del)
-	}
 }
 
 func runNoRoute(r *gin.Engine) {
