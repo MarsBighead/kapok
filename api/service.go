@@ -29,6 +29,7 @@ func run(r *gin.Engine, db *sql.DB) {
 	actions := map[string]Action{
 		"/api/vc":   NewVcRequest(db),
 		"/api/host": NewHostRequest(db),
+		"/api/vm":   NewVmRequest(db),
 	}
 	for k, a := range actions {
 		r.GET(k, a.Query)
